@@ -1,455 +1,195 @@
-
--- highest paying skills
-
-
-with job_paying as(
-SELECT
-cd.name as company_name, job_id,salary_year_avg
-FROM job_postings_fact jp
-left join company_dim cd 
-ON cd.company_id=jp.company_id
-where job_title_short = 'Data Analyst'
-and job_location='Anywhere'
-and salary_year_avg is NOT NULL
-order by salary_year_avg desc
-limit 10
-)
-select pj.*,skills from job_paying pj
-inner JOIN skills_job_dim sj
-on sj.job_id=pj.job_id
-join skills_dim sd
-on sd.skill_id=sj.skill_id
-;
-
-
-
-
-
-select * from skills_dim LIMIT 10;
-select * from skills_job_dim LIMIT 10;
-select * from job_postings_fact LIMIT 10;
-
-
-
-
-
-
-
-
-
-
-
-
 /*
-
-Most In-Demand Core Skills
-SQL (8 occurrences) → Most critical skill across top roles
-Python (7 occurrences) → Strong requirement for data manipulation and analysis
-Tableau (6 occurrences) → Leading visualization tool
-Interpretation:
-Employers prioritize candidates who can query data (SQL), analyze/program (Python), and visualize insights (Tableau).
-
-*/
-
-
-
-
-
+ we want to determine the highest paying skills, also the  skills required for data analyst
+ */
+with highest_paying_skills as(
+  SELECT *
+  FROM job_postings_fact j
+    left JOIN skills_job_dim sj ON j.job_id = sj.job_id
+    left JOIN skills_dim sd ON sj.skill_id = sd.skill_id
+  where job_title_short = 'Data Analyst'
+    and job_location = 'Anywhere'
+    and salary_year_avg is NOT NULL
+),
+new_pay_skill as(
+  select *
+  FROM highest_paying_skills
+  where job_title_short LIKE '%Data Analyst%'
+)
+SELECT c.name,
+  np.job_title,
+  np.skills,
+  ROUND(AVG(np.salary_year_avg), 0) AS Average_Salary
+FROM company_dim c
+  LEFT JOIN new_pay_skill np ON c.company_id = np.company_id
+WHERE np.skills IS NOT NULL
+GROUP BY c.name,
+  np.job_title,
+  np.skills
+ORDER BY Average_Salary DESC
+LIMIT 25;
 [
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "sql"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "sql",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "python"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "aws",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "r"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "jupyter",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "azure"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "azure",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "databricks"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "excel",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "aws"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "tableau",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "pandas"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "power bi",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "pyspark"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "databricks",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "jupyter"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "pandas",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "excel"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "pyspark",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "tableau"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "python",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "power bi"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "powerpoint",
+    "average_salary": "255830"
   },
   {
-    "company_name": "AT&T",
-    "job_id": 552322,
-    "salary_year_avg": "255829.5",
-    "skills": "powerpoint"
+    "name": "AT&T",
+    "job_title": "Associate Director- Data Insights",
+    "skills": "r",
+    "average_salary": "255830"
   },
   {
-    "company_name": "Pinterest Job Advertisements",
-    "job_id": 99305,
-    "salary_year_avg": "232423.0",
-    "skills": "sql"
+    "name": "Pinterest Job Advertisements",
+    "job_title": "Data Analyst, Marketing",
+    "skills": "sql",
+    "average_salary": "232423"
   },
   {
-    "company_name": "Pinterest Job Advertisements",
-    "job_id": 99305,
-    "salary_year_avg": "232423.0",
-    "skills": "python"
+    "name": "Pinterest Job Advertisements",
+    "job_title": "Data Analyst, Marketing",
+    "skills": "hadoop",
+    "average_salary": "232423"
   },
   {
-    "company_name": "Pinterest Job Advertisements",
-    "job_id": 99305,
-    "salary_year_avg": "232423.0",
-    "skills": "r"
+    "name": "Pinterest Job Advertisements",
+    "job_title": "Data Analyst, Marketing",
+    "skills": "python",
+    "average_salary": "232423"
   },
   {
-    "company_name": "Pinterest Job Advertisements",
-    "job_id": 99305,
-    "salary_year_avg": "232423.0",
-    "skills": "hadoop"
+    "name": "Pinterest Job Advertisements",
+    "job_title": "Data Analyst, Marketing",
+    "skills": "r",
+    "average_salary": "232423"
   },
   {
-    "company_name": "Pinterest Job Advertisements",
-    "job_id": 99305,
-    "salary_year_avg": "232423.0",
-    "skills": "tableau"
+    "name": "Pinterest Job Advertisements",
+    "job_title": "Data Analyst, Marketing",
+    "skills": "tableau",
+    "average_salary": "232423"
   },
   {
-    "company_name": "Uclahealthcareers",
-    "job_id": 1021647,
-    "salary_year_avg": "217000.0",
-    "skills": "sql"
+    "name": "Uclahealthcareers",
+    "job_title": "Data Analyst (Hybrid/Remote)",
+    "skills": "sql",
+    "average_salary": "217000"
   },
   {
-    "company_name": "Uclahealthcareers",
-    "job_id": 1021647,
-    "salary_year_avg": "217000.0",
-    "skills": "crystal"
+    "name": "Uclahealthcareers",
+    "job_title": "Data Analyst (Hybrid/Remote)",
+    "skills": "tableau",
+    "average_salary": "217000"
   },
   {
-    "company_name": "Uclahealthcareers",
-    "job_id": 1021647,
-    "salary_year_avg": "217000.0",
-    "skills": "oracle"
+    "name": "Uclahealthcareers",
+    "job_title": "Data Analyst (Hybrid/Remote)",
+    "skills": "crystal",
+    "average_salary": "217000"
   },
   {
-    "company_name": "Uclahealthcareers",
-    "job_id": 1021647,
-    "salary_year_avg": "217000.0",
-    "skills": "tableau"
+    "name": "Uclahealthcareers",
+    "job_title": "Data Analyst (Hybrid/Remote)",
+    "skills": "flow",
+    "average_salary": "217000"
   },
   {
-    "company_name": "Uclahealthcareers",
-    "job_id": 1021647,
-    "salary_year_avg": "217000.0",
-    "skills": "flow"
+    "name": "Uclahealthcareers",
+    "job_title": "Data Analyst (Hybrid/Remote)",
+    "skills": "oracle",
+    "average_salary": "217000"
   },
   {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "sql"
+    "name": "SmartAsset",
+    "job_title": "Principal Data Analyst (Remote)",
+    "skills": "numpy",
+    "average_salary": "205000"
   },
   {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "python"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "go"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "snowflake"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "pandas"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "numpy"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "excel"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "tableau"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 168310,
-    "salary_year_avg": "205000.0",
-    "skills": "gitlab"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "sql"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "python"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "azure"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "aws"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "oracle"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "snowflake"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "tableau"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "power bi"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "sap"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "jenkins"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "bitbucket"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "atlassian"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "jira"
-  },
-  {
-    "company_name": "Inclusively",
-    "job_id": 731368,
-    "salary_year_avg": "189309.0",
-    "skills": "confluence"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "sql"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "python"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "r"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "git"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "bitbucket"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "atlassian"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "jira"
-  },
-  {
-    "company_name": "Motional",
-    "job_id": 310660,
-    "salary_year_avg": "189000.0",
-    "skills": "confluence"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "sql"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "python"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "go"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "snowflake"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "pandas"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "numpy"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "excel"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "tableau"
-  },
-  {
-    "company_name": "SmartAsset",
-    "job_id": 1749593,
-    "salary_year_avg": "186000.0",
-    "skills": "gitlab"
-  },
-  {
-    "company_name": "Get It Recruit - Information Technology",
-    "job_id": 387860,
-    "salary_year_avg": "184000.0",
-    "skills": "sql"
-  },
-  {
-    "company_name": "Get It Recruit - Information Technology",
-    "job_id": 387860,
-    "salary_year_avg": "184000.0",
-    "skills": "python"
-  },
-  {
-    "company_name": "Get It Recruit - Information Technology",
-    "job_id": 387860,
-    "salary_year_avg": "184000.0",
-    "skills": "r"
+    "name": "SmartAsset",
+    "job_title": "Principal Data Analyst (Remote)",
+    "skills": "pandas",
+    "average_salary": "205000"
   }
-]
+] ```
+Insights
+SQL and Tableau are the most frequently appearing skills — they’re foundational for data querying and visualization across industries.
+
+Python and R remain essential programming languages for analytics and modeling.
+
+Pandas bridges programming and data manipulation, showing up in both tech and finance roles.
+
+Cloud and Big Data tools (AWS, Azure, Databricks, PySpark) appear primarily in AT&T’s high-paying role, signaling that enterprise-scale data infrastructure expertise drives top-tier compensation.
+
+Visualization tools (Power BI, Tableau) are consistently valued, emphasizing the importance of storytelling with data.
+
+Legacy tools (Crystal, Oracle) still appear in healthcare analytics, reflecting hybrid tech environments.
+
+```
