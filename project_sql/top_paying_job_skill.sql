@@ -1,5 +1,5 @@
 
-
+-- highest paying skills
 
 
 with job_paying as(
@@ -28,6 +28,16 @@ on sd.skill_id=sj.skill_id
 select * from skills_dim LIMIT 10;
 select * from skills_job_dim LIMIT 10;
 select * from job_postings_fact LIMIT 10;
+
+
+
+
+
+
+
+
+
+
 
 
 /*

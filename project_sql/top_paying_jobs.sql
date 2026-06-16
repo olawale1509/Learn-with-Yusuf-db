@@ -4,7 +4,6 @@ that allows the workers remote working oppotunity,  we won't even give room for 
 */
 
 
-
 SELECT
 jp.company_id,cd.name as company_name, job_id, job_title,job_location,salary_year_avg
 FROM job_postings_fact jp
